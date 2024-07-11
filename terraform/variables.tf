@@ -9,5 +9,3 @@ variable "clusterName" {
   type        = string
   default     = "terraops-eks"
 }
-
-#
