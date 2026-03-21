@@ -11,7 +11,10 @@ on:
       - main
     paths:
       - terraform/**
-
+concurrency:
+  group: terraform
+  cancel-in-progress: false
+  
 env:
  # Credentials for deployment to AWS
  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -19,7 +22,7 @@ env:
  # S3 bucket for the Terraform state
  BUCKET_TF_STATE: ${{ secrets.BUCKET_TF_STATE}}
  AWS_REGION: us-east-1
- EKS_CLUSTER: terraops-eks
+ EKS_CLUSTER: terraform-eks
 
 jobs:
    terraform:
@@ -79,5 +82,4 @@ jobs:
 
        - name: Install Ingress controller
          if: steps.apple.outcome == 'success' && steps.getconfig.outcome == 'success'
-         run: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.3/deploy/static/provider/aws/deploy.yaml
-#test
+         run: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.0/deploy/static/provider/aws/deploy.yaml#test
